@@ -1,2 +1,3 @@
-# The_Car_Game
-the car
+# The Car Game
+
+`The Car Game` with python's pygame
