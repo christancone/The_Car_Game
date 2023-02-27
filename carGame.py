@@ -1,13 +1,17 @@
 import pygame as pg
 
 class car(object):
-    def __init__(self, x, y, h, w):
+    def __init__(self, x, y, h, w, r):
+        self.rotate = r
         self.width = w
         self.height = h
         self.x = x
         self.y = y
-        self.image = pg.Surface((self.width, self.height))
-        self.image.fill((255, 255, 0))
+        self.image = pg.image.load("assets/car.png")
+        self.image = pg.transform.scale(self.image, (20, 10))
+        self.image = pg.transform.rotate(self.image, self.rotate)
+        #self.image = pg.Surface((self.width, self.height))
+        #self.image.fill((255, 255, 0))
 
     def draw(self, surface):
         surface.blit(self.image, (self.x, self.y))
@@ -36,6 +40,7 @@ def main():
     car_y = dis_h / 2
     car_h = 20
     car_w = 10
+    car_r = 90
 
     close = False
     while not close:
@@ -50,24 +55,27 @@ def main():
         if keys[pg.K_RIGHT] or keys[pg.K_LEFT]:
             car_h = 10
             car_w = 20
+            if keys[pg.K_RIGHT]:
+                car_r = 180
+                car_x += 1
+            elif keys[pg.K_LEFT]:
+                car_r = 0
+                car_x -= 1
+
         elif keys[pg.K_UP] or keys[pg.K_DOWN]:
             car_h = 20
             car_w = 10
-
-        if  keys[pg.K_UP]:
-            car_y -= 1
-        elif  keys[pg.K_RIGHT]:
-            car_x += 1
-
-        elif  keys[pg.K_DOWN]:
-            car_y += 1   
-        elif  keys[pg.K_LEFT]:
-            car_x -= 1   
+            if  keys[pg.K_UP]:
+                car_r = 270
+                car_y -= 1
+            elif  keys[pg.K_DOWN]:
+                car_r = 90
+                car_y += 1      
     
         sc.fill((0, 0, 0))
         sc.blit(text, textRect)
         pg.draw.circle(sc, engine, (100, dis_h - 15), 5)
-        car(car_x, car_y, car_h, car_w).draw(sc)
+        car(car_x, car_y, car_h, car_w, car_r).draw(sc)
         pg.display.update()
         clock.tick(60)
 
